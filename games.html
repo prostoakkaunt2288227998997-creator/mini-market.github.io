@@ -51,6 +51,8 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+        let gamesList = [];
+
         function loadLogoBackground() {
             const bgRef = database.ref('settings/logoBackground');
             bgRef.on('value', (snapshot) => {
@@ -67,31 +69,48 @@
         }
 
         function loadGames() {
-            const appsRef = database.ref('games');
+            const appsRef = database.ref('applications');
             appsRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 const gameList = document.getElementById('game-list');
                 if (data) {
-                    let html = '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">';
+                    gamesList = [];
                     for (let key in data) {
-                        const game = data[key];
-                        html += `
-                            <a href="app.html?path=games&id=${key}" style="text-decoration: none; color: inherit; display: block;">
-                                <div style="background-color: #222222; padding: 10px; border-radius: 5px; border: 1px solid #444444; text-align: center;">
-                                    <h3 style="color: #ffffff; margin: 0 0 5px 0; font-size: clamp(12px, 2vw, 16px);">${game.name}</h3>
-                                    <p style="margin: 5px 0;"><img src="${game.icon}" width="48" height="48"></p>
-                                    <p style="font-size: clamp(10px, 1.5vw, 13px);">Android: ${game.minVersion}</p>
-                                    <button style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 5px 10px; width: 100%; cursor: pointer;">Подробнее</button>
-                                </div>
-                            </a>
-                        `;
+                        const app = data[key];
+                        if (app.appSection == 2) {
+                            app.id = key;
+                            gamesList.push(app);
+                        }
                     }
-                    html += '</div>';
-                    gameList.innerHTML = html;
+                    displayGames(gamesList);
                 } else {
                     gameList.innerHTML = '<p style="color: #888888;">Игр не найдено</p>';
                 }
             });
+        }
+
+        function displayGames(games) {
+            const gameList = document.getElementById('game-list');
+            if (games && games.length > 0) {
+                let html = '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">';
+                for (let i = 0; i < games.length; i++) {
+                    const game = games[i];
+                    html += `
+                        <a href="app.html?section=2&id=${game.id}" style="text-decoration: none; color: inherit; display: block;">
+                            <div style="background-color: #222222; padding: 10px; border-radius: 5px; border: 1px solid #444444; text-align: center;">
+                                <h3 style="color: #ffffff; margin: 0 0 5px 0; font-size: clamp(12px, 2vw, 16px);">${game.name}</h3>
+                                <p style="margin: 5px 0;"><img src="${game.icon}" width="48" height="48"></p>
+                                <p style="font-size: clamp(10px, 1.5vw, 13px);">Android: ${game.minVersion}</p>
+                                <button style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 5px 10px; width: 100%; cursor: pointer;">Подробнее</button>
+                            </div>
+                        </a>
+                    `;
+                }
+                html += '</div>';
+                gameList.innerHTML = html;
+            } else {
+                gameList.innerHTML = '<p style="color: #888888;">Игр не найдено</p>';
+            }
         }
 
         loadLogoBackground();
