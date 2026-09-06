@@ -44,7 +44,7 @@
             const detailDiv = document.getElementById('app-detail');
 
             if (!appId) {
-                detailDiv.innerHTML = '<p style="color: #ff6666; font-size: 18px;">❌ Приложение не найдено</p>';
+                detailDiv.innerHTML = '<p style="color: #ff6666; font-size: 18px;">Приложение не найдено</p>';
                 return;
             }
 
@@ -67,11 +67,11 @@
                             ID: ${appId}
                         </p>
                         <a href="${app.downloadLink}" target="_blank" style="display: inline-block; width: 100%;">
-                            <button style="background-color: #2d5a27; color: #ffffff; border: none; padding: 15px 40px; font-size: 18px; cursor: pointer; border-radius: 5px; width: 100%; font-weight: bold;">📥 Скачать</button>
+                            <button style="background-color: #2d5a27; color: #ffffff; border: none; padding: 15px 40px; font-size: 18px; cursor: pointer; border-radius: 5px; width: 100%; font-weight: bold;">Скачать</button>
                         </a>
                     `;
                 } else {
-                    detailDiv.innerHTML = '<p style="color: #ff6666; font-size: 18px;">❌ Приложение не найдено</p>';
+                    detailDiv.innerHTML = '<p style="color: #ff6666; font-size: 18px;">Приложение не найдено</p>';
                 }
             });
         }
