@@ -4,51 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Mini Market</title>
-    <!-- Подключение Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body bgcolor="#1a1a1a" text="#ffffff" style="margin: 0; padding: 10px; font-family: Arial, Helvetica, sans-serif;">
 
-    <!-- Логотип с фоном-гифкой из Firebase -->
+    <!-- Логотип -->
     <div id="logoContainer" style="padding: 15px 20px; display: flex; align-items: center; flex-wrap: wrap; max-width: 100%; box-sizing: border-box; background-size: cover; background-position: center; min-height: 80px;">
-        <img src="https://i.postimg.cc/VshcJLNC/Bez-nazvania628-20260906003745.png" alt="Логотип Android" width="50" height="50" style="vertical-align: middle; flex-shrink: 0;">
-        <h1 style="color: #ffffff; display: inline; margin-left: 10px; font-size: clamp(18px, 5vw, 32px); word-break: break-word; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Mini Market</h1>
+        <img src="https://i.postimg.cc/VshcJLNC/Bez-nazvania628-20260906003745.png" alt="Логотип" width="50" height="50" style="vertical-align: middle; flex-shrink: 0;">
+        <h1 style="color: #ffffff; display: inline; margin-left: 10px; font-size: clamp(18px, 5vw, 32px); text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Mini Market</h1>
     </div>
 
     <p style="color: #cccccc; margin-top: 15px; font-size: clamp(14px, 2.5vw, 18px);">Добро пожаловать в магазин приложений для старых устройств!</p>
 
-    <hr color="#444444" style="width: 100%;">
+    <hr color="#444444">
 
-    <!-- Кнопка открытия поиска -->
-    <div style="margin: 15px 0; width: 100%; box-sizing: border-box;">
-        <button onclick="openSearchModal()" style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 10px 20px; font-size: clamp(14px, 2vw, 16px); cursor: pointer; width: 100%; max-width: 200px; box-sizing: border-box;">🔍 Поиск</button>
+    <!-- Вкладки -->
+    <div style="display: flex; flex-wrap: wrap; gap: 5px; margin: 15px 0;">
+        <a href="index.html" style="background-color: #2d5a27; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: clamp(14px, 2vw, 16px);">🏠 Главная</a>
+        <a href="games.html" style="background-color: #444444; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: clamp(14px, 2vw, 16px);">🎮 Игры</a>
+        <a href="symbian.html" style="background-color: #444444; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: clamp(14px, 2vw, 16px);">📱 Symbian</a>
     </div>
 
-    <h2 style="color: #ffffff; font-size: clamp(20px, 4vw, 28px);">Все приложения</h2>
+    <hr color="#444444">
 
-    <div id="app-list" style="width: 100%; box-sizing: border-box;">
-        <p style="color: #888888; font-size: clamp(14px, 2vw, 16px);">Загрузка приложений, это может занять некоторое время...</p>
+    <!-- Кнопка поиска -->
+    <div style="margin: 15px 0;">
+        <button onclick="openSearchModal()" style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 10px 20px; font-size: clamp(14px, 2vw, 16px); cursor: pointer; width: 100%; max-width: 200px;">🔍 Поиск</button>
     </div>
 
-    <hr color="#444444" style="width: 100%;">
+    <h2 style="color: #ffffff; font-size: clamp(20px, 4vw, 28px;">Все приложения</h2>
 
-    <p style="color: #888888; font-size: clamp(12px, 1.8vw, 14px); text-align: center;">© 2026-2027 Mini Market. Все права защищены.</p>
+    <div id="app-list">
+        <p style="color: #888888;">Загрузка...</p>
+    </div>
 
-    <!-- Модальное окно поиска (без стилей) -->
+    <hr color="#444444">
+    <p style="color: #888888; text-align: center;">© 2026-2027 Mini Market</p>
+
+    <!-- Модальное окно поиска -->
     <div id="searchModal" style="display: none; position: fixed; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7);">
         <div style="background-color: #1a1a1a; margin: 15% auto; padding: 20px; width: 90%; max-width: 500px; border: 2px solid #444444;">
             <button onclick="closeSearchModal()" style="float: right; background: none; border: none; color: #ffffff; font-size: 28px; cursor: pointer;">&times;</button>
-            <h2 style="color: #ffffff; margin-top: 0;">Поиск приложений</h2>
-            <input type="text" id="searchInput" placeholder="Введите название приложения..." style="width: 100%; padding: 10px; margin: 10px 0; background-color: #333333; color: #ffffff; border: 1px solid #666666; font-size: 16px; box-sizing: border-box;">
+            <h2 style="color: #ffffff; margin-top: 0;">Поиск</h2>
+            <input type="text" id="searchInput" placeholder="Введите название..." style="width: 100%; padding: 10px; margin: 10px 0; background-color: #333333; color: #ffffff; border: 1px solid #666666; font-size: 16px; box-sizing: border-box;">
             <br>
-            <button onclick="searchApps()" style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 10px 20px; font-size: 16px; cursor: pointer;">Найти</button>
-            <button onclick="clearSearch()" style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 10px 20px; font-size: 16px; cursor: pointer; margin-left: 5px;">Сбросить</button>
+            <button onclick="searchApps()" style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 10px 20px; cursor: pointer;">Найти</button>
+            <button onclick="clearSearch()" style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 10px 20px; cursor: pointer; margin-left: 5px;">Сбросить</button>
         </div>
     </div>
 
     <script>
-        // Конфигурация Firebase (из вашей ссылки)
         const firebaseConfig = {
             apiKey: "AIzaSyA2HwGgkM9bLjCdxjR3t8jqTzq_-J3sVwQ",
             authDomain: "mini-market-c1cc4.firebaseapp.com",
@@ -59,20 +65,16 @@
             appId: "1:123456789:web:abcdef123456"
         };
 
-        // Инициализация Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // Глобальная переменная для хранения всех приложений
         let allApps = [];
 
-        // Функция загрузки фона логотипа из Firebase
         function loadLogoBackground() {
             const bgRef = database.ref('settings/logoBackground');
             bgRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 const logoContainer = document.getElementById('logoContainer');
-                
                 if (data && data.gifUrl) {
                     logoContainer.style.backgroundImage = `url('${data.gifUrl}')`;
                     logoContainer.style.backgroundColor = 'transparent';
@@ -83,13 +85,11 @@
             });
         }
 
-        // Функция загрузки приложений из Firebase
         function loadApps() {
             const appsRef = database.ref('applications');
             appsRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 const appList = document.getElementById('app-list');
-                
                 if (data) {
                     allApps = [];
                     for (let key in data) {
@@ -99,14 +99,73 @@
                     }
                     displayApps(allApps);
                 } else {
-                    appList.innerHTML = '<p style="color: #888888; font-size: clamp(14px, 2vw, 16px);">Нет доступных приложений</p>';
-                    allApps = [];
+                    appList.innerHTML = '<p style="color: #888888;">Нет доступных приложений</p>';
                 }
             });
         }
 
-        // Функция отображения приложений (по 2 в ряд)
         function displayApps(apps) {
+            const appList = document.getElementById('app-list');
+            if (apps && apps.length > 0) {
+                let html = '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">';
+                for (let i = 0; i < apps.length; i++) {
+                    const app = apps[i];
+                    html += `
+                        <a href="app.html?id=${app.id}" style="text-decoration: none; color: inherit; display: block;">
+                            <div style="background-color: #222222; padding: 10px; border-radius: 5px; border: 1px solid #444444; text-align: center;">
+                                <h3 style="color: #ffffff; margin: 0 0 5px 0; font-size: clamp(12px, 2vw, 16px);">${app.name}</h3>
+                                <p style="margin: 5px 0;"><img src="${app.icon}" width="48" height="48"></p>
+                                <p style="font-size: clamp(10px, 1.5vw, 13px);">Android: ${app.minVersion}</p>
+                                <button style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 5px 10px; width: 100%; cursor: pointer;">Подробнее</button>
+                            </div>
+                        </a>
+                    `;
+                }
+                html += '</div>';
+                appList.innerHTML = html;
+            } else {
+                appList.innerHTML = '<p style="color: #888888;">Приложений не найдено</p>';
+            }
+        }
+
+        function openSearchModal() {
+            document.getElementById('searchModal').style.display = 'block';
+            document.getElementById('searchInput').focus();
+        }
+
+        function closeSearchModal() {
+            document.getElementById('searchModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('searchModal');
+            if (event.target === modal) modal.style.display = 'none';
+        }
+
+        function searchApps() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (searchText === '') {
+                displayApps(allApps);
+                closeSearchModal();
+                return;
+            }
+            const filteredApps = allApps.filter(app => app.name.toLowerCase().includes(searchText));
+            displayApps(filteredApps);
+            closeSearchModal();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            displayApps(allApps);
+            closeSearchModal();
+        }
+
+        loadLogoBackground();
+        loadApps();
+    </script>
+
+</body>
+</html>        function displayApps(apps) {
             const appList = document.getElementById('app-list');
             
             if (apps && apps.length > 0) {
