@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приложение</title>
+    <!-- Подключение Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body bgcolor="#1a1a1a" text="#ffffff">
+
+    <a href="index.html">← Назад</a>
+
+    <div id="app-detail">
+        <p>Загрузка...</p>
+    </div>
+
+    <script>
+        // Конфигурация Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyA2HwGgkM9bLjCdxjR3t8jqTzq_-J3sVwQ",
+            authDomain: "mini-market-c1cc4.firebaseapp.com",
+            databaseURL: "https://mini-market-c1cc4-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "mini-market-c1cc4",
+            storageBucket: "mini-market-c1cc4.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        function getAppIdFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        function loadAppDetail() {
+            const appId = getAppIdFromURL();
+            const detailDiv = document.getElementById('app-detail');
+
+            if (!appId) {
+                detailDiv.innerHTML = '<p>❌ Приложение не найдено</p>';
+                return;
+            }
+
+            const appRef = database.ref('applications/' + appId);
+            appRef.on('value', (snapshot) => {
+                const app = snapshot.val();
+
+                if (app) {
+                    document.title = app.name + ' — Mini Market';
+                    
+                    detailDiv.innerHTML = `
+                        <h1>${app.name}</h1>
+                        <p><img src="${app.icon}" alt="Иконка" width="128" height="128"></p>
+                        <p>Минимальная версия Android: ${app.minVersion}</p>
+                        <p>ID приложения: ${appId}</p>
+                        <a href="${app.downloadLink}" target="_blank">
+                            <button>📥 Скачать</button>
+                        </a>
+                        <br><br>
+                        <a href="index.html">← Вернуться в магазин</a>
+                    `;
+                } else {
+                    detailDiv.innerHTML = '<p>❌ Приложение не найдено</p>';
+                }
+            });
+        }
+
+        loadAppDetail();
+    </script>
+
+</body>
+</html>
