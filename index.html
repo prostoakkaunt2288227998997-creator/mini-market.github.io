@@ -21,16 +21,16 @@
 
     <!-- Вкладки -->
     <div style="display: flex; flex-wrap: wrap; gap: 5px; margin: 15px 0;">
-        <a href="index.html" style="background-color: #2d5a27; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: clamp(14px, 2vw, 16px);">🏠 Главная</a>
-        <a href="games.html" style="background-color: #444444; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: clamp(14px, 2vw, 16px);">🎮 Игры</a>
-        <a href="symbian.html" style="background-color: #444444; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: clamp(14px, 2vw, 16px);">📱 Symbian</a>
+        <a href="index.html" style="background-color: #2d5a27; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: clamp(14px, 2vw, 16px);">Главная</a>
+        <a href="games.html" style="background-color: #444444; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: clamp(14px, 2vw, 16px);">Игры</a>
+        <a href="https://t.me/lite_market" target="_blank" style="background-color: #444444; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: clamp(14px, 2vw, 16px);">ТГК</a>
     </div>
 
     <hr color="#444444">
 
     <!-- Кнопка поиска -->
     <div style="margin: 15px 0;">
-        <button onclick="openSearchModal()" style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 10px 20px; font-size: clamp(14px, 2vw, 16px); cursor: pointer; width: 100%; max-width: 200px;">🔍 Поиск</button>
+        <button onclick="openSearchModal()" style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 10px 20px; font-size: clamp(14px, 2vw, 16px); cursor: pointer; width: 100%; max-width: 200px;">Поиск</button>
     </div>
 
     <h2 style="color: #ffffff; font-size: clamp(20px, 4vw, 28px);">Все приложения</h2>
@@ -45,7 +45,7 @@
     <!-- Модальное окно поиска -->
     <div id="searchModal" style="display: none; position: fixed; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7);">
         <div style="background-color: #1a1a1a; margin: 15% auto; padding: 20px; width: 90%; max-width: 500px; border: 2px solid #444444;">
-            <button onclick="closeSearchModal()" style="float: right; background: none; border: none; color: #ffffff; font-size: 28px; cursor: pointer;">&times;</button>
+            <button onclick="closeSearchModal()" style="float: right; background: none; border: none; color: #ffffff; font-size: 28px; cursor: pointer;">X</button>
             <h2 style="color: #ffffff; margin-top: 0;">Поиск</h2>
             <input type="text" id="searchInput" placeholder="Введите название..." style="width: 100%; padding: 10px; margin: 10px 0; background-color: #333333; color: #ffffff; border: 1px solid #666666; font-size: 16px; box-sizing: border-box;">
             <br>
@@ -76,7 +76,7 @@
                 const data = snapshot.val();
                 const logoContainer = document.getElementById('logoContainer');
                 if (data && data.gifUrl) {
-                    logoContainer.style.backgroundImage = `url('${data.gifUrl}')`;
+                    logoContainer.style.backgroundImage = 'url(' + data.gifUrl + ')';
                     logoContainer.style.backgroundColor = 'transparent';
                 } else {
                     logoContainer.style.backgroundColor = '#2d5a27';
@@ -110,16 +110,13 @@
                 let html = '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">';
                 for (let i = 0; i < apps.length; i++) {
                     const app = apps[i];
-                    html += `
-                        <a href="app.html?section=${app.appSection}&id=${app.id}" style="text-decoration: none; color: inherit; display: block;">
-                            <div style="background-color: #222222; padding: 10px; border-radius: 5px; border: 1px solid #444444; text-align: center;">
-                                <h3 style="color: #ffffff; margin: 0 0 5px 0; font-size: clamp(12px, 2vw, 16px);">${app.name}</h3>
-                                <p style="margin: 5px 0;"><img src="${app.icon}" width="48" height="48"></p>
-                                <p style="font-size: clamp(10px, 1.5vw, 13px);">${app.appSection == 1 || app.appSection == 2 ? 'Android' : 'Symbian'}: ${app.minVersion}</p>
-                                <button style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 5px 10px; width: 100%; cursor: pointer;">Подробнее</button>
-                            </div>
-                        </a>
-                    `;
+                    html += '<a href="app.html?section=' + app.appSection + '&id=' + app.id + '" style="text-decoration: none; color: inherit; display: block;">';
+                    html += '<div style="background-color: #222222; padding: 10px; border-radius: 5px; border: 1px solid #444444; text-align: center;">';
+                    html += '<h3 style="color: #ffffff; margin: 0 0 5px 0; font-size: clamp(12px, 2vw, 16px);">' + app.name + '</h3>';
+                    html += '<p style="margin: 5px 0;"><img src="' + app.icon + '" width="48" height="48"></p>';
+                    html += '<p style="font-size: clamp(10px, 1.5vw, 13px);">' + (app.appSection == 1 || app.appSection == 2 ? 'Android' : 'Symbian') + ': ' + app.minVersion + '</p>';
+                    html += '<button style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 5px 10px; width: 100%; cursor: pointer;">Подробнее</button>';
+                    html += '</div></a>';
                 }
                 html += '</div>';
                 appList.innerHTML = html;
@@ -149,7 +146,9 @@
                 closeSearchModal();
                 return;
             }
-            const filteredApps = allApps.filter(app => app.name.toLowerCase().includes(searchText));
+            const filteredApps = allApps.filter(function(app) {
+                return app.name.toLowerCase().includes(searchText);
+            });
             displayApps(filteredApps);
             closeSearchModal();
         }
