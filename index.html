@@ -111,11 +111,11 @@
                 for (let i = 0; i < apps.length; i++) {
                     const app = apps[i];
                     html += `
-                        <a href="app.html?path=applications&id=${app.id}" style="text-decoration: none; color: inherit; display: block;">
+                        <a href="app.html?section=${app.appSection}&id=${app.id}" style="text-decoration: none; color: inherit; display: block;">
                             <div style="background-color: #222222; padding: 10px; border-radius: 5px; border: 1px solid #444444; text-align: center;">
                                 <h3 style="color: #ffffff; margin: 0 0 5px 0; font-size: clamp(12px, 2vw, 16px);">${app.name}</h3>
                                 <p style="margin: 5px 0;"><img src="${app.icon}" width="48" height="48"></p>
-                                <p style="font-size: clamp(10px, 1.5vw, 13px);">Android: ${app.minVersion}</p>
+                                <p style="font-size: clamp(10px, 1.5vw, 13px);">${app.appSection == 1 || app.appSection == 2 ? 'Android' : 'Symbian'}: ${app.minVersion}</p>
                                 <button style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 5px 10px; width: 100%; cursor: pointer;">Подробнее</button>
                             </div>
                         </a>
