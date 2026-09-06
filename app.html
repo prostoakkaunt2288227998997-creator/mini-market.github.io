@@ -11,7 +11,7 @@
 <body bgcolor="#1a1a1a" text="#ffffff" style="margin: 0; padding: 20px; font-family: Arial, sans-serif;">
 
     <!-- Кнопка назад -->
-    <a href="index.html" style="color: #aaff00; font-size: 18px; text-decoration: none; display: inline-block; margin-bottom: 20px;">← Назад</a>
+    <a href="javascript:history.back()" style="color: #aaff00; font-size: 18px; text-decoration: none; display: inline-block; margin-bottom: 20px;">← Назад</a>
 
     <div id="app-detail" style="max-width: 600px; margin: 0 auto; background-color: #222222; padding: 30px; border-radius: 10px; border: 1px solid #444444; text-align: center;">
         <p style="color: #888888;">Загрузка...</p>
@@ -38,17 +38,32 @@
             return params.get('id');
         }
 
+        // Определяем путь в Firebase по ID
+        function getFirebasePath(appId) {
+            if (appId.startsWith('symbian_apps_')) {
+                return 'symbian/apps/' + appId.replace('symbian_apps_', '');
+            } else if (appId.startsWith('symbian_games_')) {
+                return 'symbian/games/' + appId.replace('symbian_games_', '');
+            } else if (appId.startsWith('game_')) {
+                return 'games/' + appId.replace('game_', '');
+            } else {
+                return 'applications/' + appId;
+            }
+        }
+
         // Загружаем данные приложения
         function loadAppDetail() {
             const appId = getAppIdFromURL();
             const detailDiv = document.getElementById('app-detail');
 
             if (!appId) {
-                detailDiv.innerHTML = '<p style="color: #ff6666; font-size: 18px;">Приложение не найдено</p>';
+                detailDiv.innerHTML = '<p style="color: #ff6666; font-size: 18px;">❌ Приложение не найдено</p>';
                 return;
             }
 
-            const appRef = database.ref('applications/' + appId);
+            const path = getFirebasePath(appId);
+            const appRef = database.ref(path);
+            
             appRef.on('value', (snapshot) => {
                 const app = snapshot.val();
 
@@ -61,17 +76,17 @@
                             <img src="${app.icon}" alt="Иконка" width="128" height="128" style="display: block; margin: 0 auto;">
                         </div>
                         <p style="font-size: 16px; color: #cccccc; margin: 10px 0;">
-                            <strong>Минимальная версия Android:</strong> ${app.minVersion}
+                            <strong>Минимальная версия:</strong> ${app.minVersion || 'Не указана'}
                         </p>
                         <p style="font-size: 14px; color: #888888; margin: 5px 0 20px 0;">
                             ID: ${appId}
                         </p>
                         <a href="${app.downloadLink}" target="_blank" style="display: inline-block; width: 100%;">
-                            <button style="background-color: #2d5a27; color: #ffffff; border: none; padding: 15px 40px; font-size: 18px; cursor: pointer; border-radius: 5px; width: 100%; font-weight: bold;">Скачать</button>
+                            <button style="background-color: #2d5a27; color: #ffffff; border: none; padding: 15px 40px; font-size: 18px; cursor: pointer; border-radius: 5px; width: 100%; font-weight: bold;">📥 Скачать</button>
                         </a>
                     `;
                 } else {
-                    detailDiv.innerHTML = '<p style="color: #ff6666; font-size: 18px;">Приложение не найдено</p>';
+                    detailDiv.innerHTML = '<p style="color: #ff6666; font-size: 18px;">❌ Приложение не найдено</p>';
                 }
             });
         }
