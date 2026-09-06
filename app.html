@@ -32,26 +32,35 @@
         function getParamsFromURL() {
             const params = new URLSearchParams(window.location.search);
             return {
-                path: params.get('path'),
+                section: params.get('section'),
                 id: params.get('id')
             };
         }
 
         function loadAppDetail() {
-            const { path, id } = getParamsFromURL();
+            const { section, id } = getParamsFromURL();
             const detailDiv = document.getElementById('app-detail');
 
-            if (!path || !id) {
+            if (!section || !id) {
                 detailDiv.innerHTML = '<p style="color: #ff6666; font-size: 18px;">❌ Неверная ссылка</p>';
                 return;
             }
 
-            const appRef = database.ref(path + '/' + id);
+            const appRef = database.ref('applications/' + id);
             
-            appRef.on('value', (snapshot) => {
+            appRef.once('value', (snapshot) => {
                 const app = snapshot.val();
 
                 if (app) {
+                    // Проверяем, что appSection совпадает с переданным section
+                    if (app.appSection != section) {
+                        detailDiv.innerHTML = `
+                            <p style="color: #ff6666; font-size: 18px;">❌ Приложение не найдено в этом разделе</p>
+                            <p style="color: #888888; font-size: 14px;">ID: ${id} | Ожидался раздел: ${section} | Фактический: ${app.appSection}</p>
+                        `;
+                        return;
+                    }
+
                     document.title = app.name + ' — Mini Market';
                     
                     detailDiv.innerHTML = `
@@ -67,7 +76,10 @@
                         </a>
                     `;
                 } else {
-                    detailDiv.innerHTML = '<p style="color: #ff6666; font-size: 18px;">❌ Приложение не найдено</p>';
+                    detailDiv.innerHTML = `
+                        <p style="color: #ff6666; font-size: 18px;">❌ Приложение не найдено</p>
+                        <p style="color: #888888; font-size: 14px;">ID: ${id}</p>
+                    `;
                 }
             });
         }
