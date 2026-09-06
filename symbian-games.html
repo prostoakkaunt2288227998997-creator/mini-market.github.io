@@ -75,7 +75,7 @@
         }
 
         function loadSymbianGames() {
-            const appsRef = database.ref('symbian/games');
+            const appsRef = database.ref('applications');
             appsRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 const list = document.getElementById('symbian-games-list');
@@ -83,19 +83,21 @@
                     let html = '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">';
                     for (let key in data) {
                         const game = data[key];
-                        html += `
-                            <a href="app.html?path=symbian/games&id=${key}" style="text-decoration: none; color: inherit; display: block;">
-                                <div style="background-color: #222222; padding: 10px; border-radius: 5px; border: 1px solid #444444; text-align: center;">
-                                    <h3 style="color: #ffffff; margin: 0 0 5px 0; font-size: clamp(12px, 2vw, 16px);">${game.name}</h3>
-                                    <p style="margin: 5px 0;"><img src="${game.icon}" width="48" height="48"></p>
-                                    <p style="font-size: clamp(10px, 1.5vw, 13px);">Symbian: ${game.minVersion || 'S60v3'}</p>
-                                    <button style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 5px 10px; width: 100%; cursor: pointer;">Подробнее</button>
-                                </div>
-                            </a>
-                        `;
+                        if (game.appSection == 5) {
+                            html += `
+                                <a href="app.html?section=5&id=${key}" style="text-decoration: none; color: inherit; display: block;">
+                                    <div style="background-color: #222222; padding: 10px; border-radius: 5px; border: 1px solid #444444; text-align: center;">
+                                        <h3 style="color: #ffffff; margin: 0 0 5px 0; font-size: clamp(12px, 2vw, 16px);">${game.name}</h3>
+                                        <p style="margin: 5px 0;"><img src="${game.icon}" width="48" height="48"></p>
+                                        <p style="font-size: clamp(10px, 1.5vw, 13px);">Symbian: ${game.minVersion || 'S60v3'}</p>
+                                        <button style="background-color: #444444; color: #ffffff; border: 1px solid #666666; padding: 5px 10px; width: 100%; cursor: pointer;">Подробнее</button>
+                                    </div>
+                                </a>
+                            `;
+                        }
                     }
                     html += '</div>';
-                    list.innerHTML = html;
+                    list.innerHTML = html || '<p style="color: #888888;">Игр для Symbian не найдено</p>';
                 } else {
                     list.innerHTML = '<p style="color: #888888;">Игр для Symbian не найдено</p>';
                 }
